@@ -1,20 +1,39 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { PaperProvider, MD3LightTheme } from 'react-native-paper';
+import { AuthProvider } from './src/contexts/AuthContext';
+import { RelationshipProvider } from './src/contexts/RelationshipContext';
+import AppNavigator from './src/navigation/AppNavigator';
 
+// Custom theme — warm coral & orange for a playful couple-friendly vibe
+const theme = {
+  ...MD3LightTheme,
+  colors: {
+    ...MD3LightTheme.colors,
+    primary: '#FF6B6B',
+    secondary: '#FFB366',
+    background: '#FFF8F0',
+    surface: '#FFFFFF',
+    onSurface: '#2D2D2D',
+    onSurfaceVariant: '#8E8E8E',
+  },
+};
+
+// App entry point — wraps the entire app in:
+// 1. PaperProvider for Material Design UI theming
+// 2. AuthProvider for login/logout state
+// 3. RelationshipProvider for weekly prompt & submission data
+// 4. NavigationContainer for React Navigation
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <PaperProvider theme={theme}>
+      <AuthProvider>
+        <RelationshipProvider>
+          <NavigationContainer>
+            <AppNavigator />
+          </NavigationContainer>
+        </RelationshipProvider>
+      </AuthProvider>
+    </PaperProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
